@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div id="app">
+        <a v-if="flag">Vue.js</a>
+        <ul>
+            <li v-for="system in systems">{{ system }}</li>
+        </ul>
+        <p v-show="flag">Vue.js</p>
+        <h5 v-bind:id="uid">Vue Start</h5>
+        <button v-on:click="popupAlert">경고 버튼</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.2/dist/vue.js"></script>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                flag: true,
+                systems: [
+                    'linux',
+                    'macOs',
+                    'window'
+                ],
+                uid: 10
+            },
+            methods: {
+                popupAlert: function () {
+                    return alert('Warning')
+                }
+            }
+        });
+    </script>
+</body>
+</html>
