@@ -1,10 +1,10 @@
 <template>
   <section>
     <transition-group name="list" tag="ul">
-      <li v-for="(todoItem, index) in propsdata" :key="todoItem" class="shadow">
+      <li v-for="todoItem in propsdata" :key="todoItem.key" class="shadow">
         <i class="checkBtn fas fa-check" aria-hidden="true"></i>
-        {{ todoItem }}
-        <span class="removeBtn" type="button" @click="removeTodo(todoItem, index)">
+        {{ todoItem.todayTodo }}
+        <span class="removeBtn" type="button" @click="removeTodo(todoItem)">
           <i class="far fa-trash-alt" aria-hidden="true"></i>
         </span>
       </li>
@@ -16,8 +16,8 @@
 export default {
   props: ['propsdata'],
   methods: {
-    removeTodo(todoItem, index) {
-      this.$emit('removeTodo', todoItem, index);
+    removeTodo(todoItem) {
+      this.$emit('removeTodo', todoItem);
     }
   }
 }

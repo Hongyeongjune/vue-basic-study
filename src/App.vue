@@ -13,6 +13,9 @@ import TodoHeader from "./components/TodoHeader.vue";
 import TodoInput from "./components/TodoInput.vue";
 import TodoList from "./components/TodoList.vue";
 import TodoFooter from "./components/TodoFooter.vue";
+import axios from 'axios';
+
+axios.defaults.baseURL = 'http://127.0.0.1:8081'
 
 export default {
   data() {
@@ -21,32 +24,44 @@ export default {
     }
   },
   created() {
-    if (localStorage.length > 0) {
-      for(var i=0; i<localStorage.length; i++) {
-        this.todoItems.push(localStorage.key(i));
-      }
-    }
+    this.readTodo();
+  },
+  updated() {
+    this.readTodo();
   },
   methods: {
     addTodo(todoItem) {
-      localStorage.setItem(todoItem, todoItem);
-      this.todoItems.push(todoItem);
+      axios.post('', todoItem, {
+        headers: {
+          'content-type' : 'text/plain'
+        }})
+          .then(response => {
+            console.log(response.data)
+          })
+          .catch(e => {
+            console.log('error: ', e)
+          });
+    },
+    readTodo() {
+      axios.get('')
+          .then(response => {
+            this.todoItems = response.data
+          })
+          .catch(error => console.log(error));
     },
     clearAll() {
-      localStorage.clear();
-      this.todoItems = [];
+      axios.delete('/all').catch(error => console.log(error));
     },
-    removeTodo(todoItem, index) {
-      localStorage.removeItem(todoItem);
-      this.todoItems.splice(index, 1);
+    removeTodo(todoItem) {
+      axios.delete('/' + todoItem.key).catch(error => console.log(error));
+      this.todoItems.splice(todoItem.key, 1);
     }
   },
-
  components: {
    'TodoHeader': TodoHeader,
    'TodoInput': TodoInput,
    'TodoList': TodoList,
-   'TodoFooter': TodoFooter
+   'TodoFooter': TodoFooter,
  }
 }
 </script>
